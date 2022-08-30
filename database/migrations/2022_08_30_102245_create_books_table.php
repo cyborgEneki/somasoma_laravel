@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('books', function (Blueprint $table) {
-            $table->primary('id');
+            $table->id();
             $table->string('name');
             $table->string('author');
+            $table->foreignId('user_id')->constrained();
             $table->string('img_url');
             $table->string('file_url');
             $table->softDeletes();
