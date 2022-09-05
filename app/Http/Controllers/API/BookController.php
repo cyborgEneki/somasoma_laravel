@@ -3,33 +3,30 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BookRequest;
+use App\Interfaces\BookInterface;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    private $bookRepository;
+    private $bookInterface;
 
-    public function __construct()
+    public function __construct(BookInterface $bookInterface)
     {
-        $this->bookRepository = new BookInterface();
+        $this->bookInterface = $bookInterface;
     }
 
-    public function store(Request $request, $id = null)
+    public function store(BookRequest $request, $id = null)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'author' => 'required',
-            'password' => 'required'
-        ]);
-
-        $input = request()->all();
+        dd('test');
+        $input = $request->all();
         // $input['user_id'] = auth()->id;
         // $input['img_url'] = ;
         // $input['file_url'] = ;
 
         // Add genres and validate
 
-        $book = $this->bookRepository->createBook($id, $input);
+        $book = $this->bookInterface->createBook($id, $input);
 
         if (!$book) {
             // return response()->json([

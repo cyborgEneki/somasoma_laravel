@@ -2,6 +2,8 @@
 
 namespace App\Interfaces;
 
+use App\Http\Requests\BookRequest;
+
 interface BookInterface {
-    public function createBook(int $id = null, array $input);
+    public function createBook(BookRequest $request, $id = null);
 }

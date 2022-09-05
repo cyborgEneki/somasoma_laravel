@@ -1,22 +1,32 @@
 <?php
 
+namespace App\Repositories;
+
+use App\Http\Requests\BookRequest;
 use App\Interfaces\BookInterface;
 use App\Models\Book;
+use App\Traits\ResponseApi;
 
 class BookRepository implements BookInterface
 {
-    public function createBook($id = null, array $input)
+    use ResponseApi;
+
+    public function createBook(BookRequest $request, $id = null)
     {
+        $input = $request->all();
+
         if ($id) {
             $book = Book::find($id);
 
             if (!$book) {
-                return false;
+                return $this->error('No book with ID ' . $id, 404);
             }
 
-            return $book->update($input);
+            $book->update($input);
         } else {
-            return Book::create($input);
+            $book = Book::create($input);
         }
+
+        return $this->success($id ? 'Book created' : 'Book updated', $book, $id ? 200 : 201);
     }
 }
