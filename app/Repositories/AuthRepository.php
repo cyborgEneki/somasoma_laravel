@@ -21,8 +21,14 @@ class AuthRepository implements AuthInterface
         ], 200);
     }
 
-    public function loginUser($input, $userId)
+    public function loginUser($input)
     {
-        
+        $user = User::where('email', $input['email'])->first();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User logged in successfully',
+            'token' => $user->createToken("API TOKEN")->plainTextToken
+        ], 200);
     }
 }
