@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookRequest;
 use App\Interfaces\BookInterface;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -18,28 +18,13 @@ class BookController extends Controller
 
     public function store(BookRequest $request, $id = null)
     {
-        dd('test');
         $input = $request->all();
-        // $input['user_id'] = auth()->id;
-        // $input['img_url'] = ;
-        // $input['file_url'] = ;
 
-        // Add genres and validate
+        $input['user_id'] = auth()->id();
 
-        $book = $this->bookInterface->createBook($id, $input);
+        $path = Storage::disk('s3')->put('books', $request->book);
+        $input['book_url'] = Storage::disk('s3')->url($path);
 
-        if (!$book) {
-            // return response()->json([
-            //     'message' => 'No user found'
-            //     'error' => true
-            // ], 404);
-        } else {
-            return response()->json([
-                'message' => 'User detail',
-                'code' => 200,
-                'error' => false,
-                'results' => $book
-            ], 200);
-        }
+        return $this->bookInterface->storeBook($input, $id);
     }
 }

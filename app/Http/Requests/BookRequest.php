@@ -37,7 +37,7 @@ class BookRequest extends FormRequest
         return [
             'name' => 'required',
             'author' => 'required',
-            'book' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'book' => 'required|mimes:pdf|max:100000'
         ];
     }
 }

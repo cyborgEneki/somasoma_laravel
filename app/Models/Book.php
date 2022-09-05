@@ -14,8 +14,7 @@ class Book extends Model
     protected $fillable = [
         'name',
         'author',
-        'img_url',
-        'file_url',
+        'book_url',
         'user_id'
     ];
 
