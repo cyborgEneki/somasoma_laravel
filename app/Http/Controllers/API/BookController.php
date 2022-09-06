@@ -21,7 +21,7 @@ class BookController extends Controller
         $this->fileTypeInterface = $fileTypeInterface;
     }
 
-    public function store(BookRequest $request, $id = null)
+    public function store(BookRequest $request, $id = null) // adapt form request
     {
         $input = $request->all();
 dd($input);
@@ -45,5 +45,10 @@ dd($input);
         }
 
         return $fileType->id;
+    }
+
+    public function changeBookFile(BookRequest $request, $id) // diff form request
+    {
+        //specifically for changing book
     }
 }
