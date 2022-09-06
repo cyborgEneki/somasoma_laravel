@@ -15,12 +15,19 @@ class Book extends Model
         'name',
         'author',
         'book_url',
-        'user_id'
+        'book_jacket_url',
+        'user_id',
+        'file_type_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function fileType()
+    {
+        return $this->belongsTo(FileType::class);
     }
 
     public function genres()

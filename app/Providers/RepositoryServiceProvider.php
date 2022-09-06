@@ -20,5 +20,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Interfaces\AuthInterface',
             'App\Repositories\AuthRepository'
         );
+
+        $this->app->bind(
+            'App\Interfaces\FileTypeInterface',
+            'App\Repositories\FileTypeRepository'
+        );
     }
 }
