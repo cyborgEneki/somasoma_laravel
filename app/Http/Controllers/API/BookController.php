@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BookChangeFileRequest;
+use App\Http\Requests\BookChangeJacketRequest;
 use App\Http\Requests\BookRequest;
 use App\Interfaces\BookInterface;
 use App\Interfaces\FileTypeInterface;
@@ -53,12 +55,12 @@ class BookController extends Controller
         return $this->fileTypeInterface->storeFileType($ext);
     }
 
-    public function changeBookFile(BookRequest $request, $id) // diff form request
+    public function changeBookFile(BookChangeFileRequest $request, $id)
     {
         //specifically for changing book
     }
 
-    public function changeBookJacket(BookRequest $request, $id) // diff form request
+    public function changeBookJacket(BookChangeJacketRequest $request, $id)
     {
         //specifically for changing book
     }

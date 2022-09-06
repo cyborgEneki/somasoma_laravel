@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BookRequest extends FormRequest
+class BookChangeJacketRequest extends FormRequest
 {
     protected function failedValidation(Validator $validator)
     {
@@ -35,24 +35,7 @@ class BookRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'author' => 'required',
-            'book_jacket' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
-        ] +
-            ($this->route('id') ? $this->update() : $this->store());
-    }
-
-    protected function store()
-    {
-        return [
-            'book' => 'required|mimes:pdf'
-        ];
-    }
-
-    protected function update()
-    {
-        return [
-            'book' => 'nullable|mimes:pdf'
+            'book_jacket' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
         ];
     }
 }
