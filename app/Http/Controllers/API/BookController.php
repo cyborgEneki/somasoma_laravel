@@ -21,24 +21,15 @@ class BookController extends Controller
         $this->fileTypeInterface = $fileTypeInterface;
     }
 
-    public function store(BookRequest $request)
+    public function store(BookRequest $request, $id = null)
     {
         $input = $request->all();
 
         $input['user_id'] = auth()->id();
+        
         $input['file_type_id'] = $this->getFileTypeId($input['book']);
 
-        return $this->bookInterface->storeBook($input);
-    }
-
-    public function update(BookRequest $request, $id)
-    {
-        $input = $request->all();
-dd($input);
-        $input['user_id'] = auth()->id();
-        $input['file_type_id'] = $this->getFileTypeId($input['book']);
-
-        return $this->bookInterface->updateBook($input, $id);
+        return $this->bookInterface->storeBook($input, $id);
     }
 
     private function getFileTypeId($file)

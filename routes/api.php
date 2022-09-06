@@ -16,7 +16,7 @@ use App\Http\Controllers\API\BookController;
 |
 */
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('books', BookController::class);
+    Route::post('create-book/{id?}', [BookController::class, 'store']);
 });
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);

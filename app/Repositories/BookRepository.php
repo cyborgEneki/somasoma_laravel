@@ -11,38 +11,34 @@ class BookRepository implements BookInterface
 {
     use ResponseApi;
 
-    public function storeBook($input)
+    public function storeBook($input, $id = null)
     {
-        $input['book_jacket_url'] = $this->saveBookJacketToStorage($input['book_jacket']);
-        $input['book_url'] = $this->saveBookToStorage($input['book']);
+        if ($id) {
+            $book = Book::find($id);
 
-        $book = Book::create($input);
-        $book->genres()->sync($input['genreIds']);
+            if (!$book) {
+                return $this->error('No book with ID ' . $id, 404);
+            }
 
-        return $this->success('Book created', $book, 201);
-    }
+            $oldBookUrl = $book->book_url;
 
-    public function updateBook($input, $id)
-    {
-        $book = Book::find($id);
+            $input['book_url'] = $this->saveBookToStorage($input['book']);
 
-        if (!$book) {
-            return $this->error('No book with ID ' . $id, 404);
+            $book->update($input);
+
+            Storage::disk('s3')->delete($oldBookUrl);
+        } else {
+            $input['book_jacket_url'] = $this->saveBookJacketToStorage($input['book_jacket']);
+            $input['book_url'] = $this->saveBookToStorage($input['book']);
+
+            $book = Book::create($input);
         }
-
-        $oldBookUrl = $book->book_url;
-
-        $input['book_url'] = $this->saveBookToStorage($input['book']);
-
-        $book->update($input);
-
-        Storage::disk('s3')->delete($oldBookUrl);
 
         $book->genres()->sync($input['genreIds']);
 
         return $this->success($id ? 'Book updated' : 'Book created', $book, $id ? 204 : 201);
     }
-
+    
     private function saveBookToStorage($file)
     {
         return Storage::disk('s3')->put('books', $file);
