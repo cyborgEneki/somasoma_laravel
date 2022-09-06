@@ -22,8 +22,9 @@ class BookController extends Controller
 
         $input['user_id'] = auth()->id();
 
-        $path = Storage::disk('s3')->put('books', $request->book);
-        $input['book_url'] = Storage::disk('s3')->url($path);
+        dd($input['book']->getClientOriginalExtension());
+
+        $input['file_type'] = $input['book']->getClientOriginalExtension();
 
         return $this->bookInterface->storeBook($input, $id);
     }
