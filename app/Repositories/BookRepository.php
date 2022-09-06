@@ -20,34 +20,9 @@ class BookRepository implements BookInterface
                 return $this->error('No book with ID ' . $id, 404);
             }
 
-            $oldBookName = $book->original_file_name;
-            $newBookName = $input['book']->getClientOriginalName();
-
-            if ($this->hasFileNameChanged($oldBookName, $newBookName)) {
-                $oldBookUrl = $book->book_url;
-
-                $this->deleteFileFromStorage($oldBookUrl);
-
-                $input['original_file_name'] = $input['book']->getClientOriginalName();
-                $input['book_url'] = $this->saveFileToStorage('books', $input['book']);
-            }
-
-            if ($book->original_book_jacket_name != $input['book_jacket']->getClientOriginalName()) {
-                $oldBookJacketUrl = $book->book_jacket_url;
-
-                $this->deleteFileFromStorage($oldBookJacketUrl);
-
-                $input['original_book_jacket_name'] = $input['book_jacket']->getClientOriginalName();
-                $input['book_jacket_url'] = $this->saveFileToStorage('book_jackets', $input['book_jacket']);
-            }
-
             $book->update($input);
         } else {
-            $input['book_jacket_url'] = $this->saveFileToStorage('book_jackets', $input['book_jacket']);
-            $input['book_url'] = $this->saveFileToStorage('books', $input['book']);
-
-            $input['original_book_jacket_name'] = $input['book_jacket']->getClientOriginalName();
-            $input['original_file_name'] = $input['book']->getClientOriginalName();
+            $this->getStorageFileUrls($input);
 
             $book = Book::create($input);
         }
@@ -57,21 +32,43 @@ class BookRepository implements BookInterface
         return $this->success($id ? 'Book updated' : 'Book created', $book, $id ? 204 : 201);
     }
 
-    private function hasFileNameChanged($oldName, $newName)
+    private function getStorageFileUrls(&$input)
     {
-        return $oldName != $newName;
-    }
-
-    private function deleteFileFromStorage($oldUrl)
-    {
-        Storage::disk('s3')->delete($oldUrl);
+        $input['book_jacket_url'] = $this->saveFileToStorage('book_jackets', $input['book_jacket']);
+        $input['book_url'] = $this->saveFileToStorage('books', $input['book']);
     }
 
     private function saveFileToStorage($folderName, $file)
     {
         return Storage::disk('s3')->put($folderName, $file);
     }
-}
 
-// delete/replace when edited
-// how to identify a book that's repeated
+    public function changeBook()
+    {
+        // if ($this->hasFileNameChanged($oldBookName, $newBookName)) {
+        //     $oldBookUrl = $book->book_url;
+
+        //     $this->deleteFileFromStorage($oldBookUrl);
+
+        //     $input['original_file_name'] = $input['book']->getClientOriginalName();
+        //     $input['book_url'] = $this->saveFileToStorage('books', $input['book']);
+        // }
+    }
+
+    public function changeBookJacket()
+    {
+        // if ($book->original_book_jacket_name != $input['book_jacket']->getClientOriginalName()) {
+        //     $oldBookJacketUrl = $book->book_jacket_url;
+
+        //     $this->deleteFileFromStorage($oldBookJacketUrl);
+
+        //     $input['original_book_jacket_name'] = $input['book_jacket']->getClientOriginalName();
+        //     $input['book_jacket_url'] = $this->saveFileToStorage('book_jackets', $input['book_jacket']);
+        // }
+    }
+
+    private function deleteFileFromStorage($oldUrl)
+    {
+        Storage::disk('s3')->delete($oldUrl);
+    }
+}
