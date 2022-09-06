@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('books', function (Blueprint $table) {
+        Schema::create('file_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('author');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('file_type_id')->constrained();
-            $table->string('book_jacket_url');
-            $table->string('book_url');
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('books');
+        Schema::dropIfExists('file_types');
     }
 };
