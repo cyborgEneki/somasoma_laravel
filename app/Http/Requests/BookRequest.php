@@ -16,7 +16,7 @@ class BookRequest extends FormRequest
             'data'    => $validator->errors(),
         ]));
     }
-    
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -37,8 +37,22 @@ class BookRequest extends FormRequest
         return [
             'name' => 'required',
             'author' => 'required',
-            'book' => 'required|mimes:pdf|max:100000',
             'book_jacket' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ] +
+            ($this->route('id') ? $this->update() : $this->store());
+    }
+
+    protected function store()
+    {
+        return [
+            'book' => 'required|mimes:pdf|max:100000'
+        ];
+    }
+
+    protected function update()
+    {
+        return [
+            'book' => 'nullable|mimes:pdf|max:100000'
         ];
     }
 }
