@@ -52,7 +52,8 @@ class BookRequest extends FormRequest
     protected function update()
     {
         return [
-            'book' => 'nullable|mimes:pdf'
+            'book' => 'prohibited',
+            'book_jacket' => 'prohibited'
         ];
     }
 }

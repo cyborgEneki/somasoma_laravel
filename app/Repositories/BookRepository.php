@@ -43,7 +43,7 @@ class BookRepository implements BookInterface
         return Storage::disk('s3')->put($folderName, $file);
     }
 
-    public function changeBook()
+    public function changeBook($input)
     {
         // if ($this->hasFileNameChanged($oldBookName, $newBookName)) {
         //     $oldBookUrl = $book->book_url;
@@ -55,7 +55,7 @@ class BookRepository implements BookInterface
         // }
     }
 
-    public function changeBookJacket()
+    public function changeBookJacket($input)
     {
         // if ($book->original_book_jacket_name != $input['book_jacket']->getClientOriginalName()) {
         //     $oldBookJacketUrl = $book->book_jacket_url;

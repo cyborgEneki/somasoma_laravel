@@ -57,11 +57,11 @@ class BookController extends Controller
 
     public function changeBookFile(BookChangeFileRequest $request, $id)
     {
-        //specifically for changing book
+        $input = $request->get('book');
     }
 
     public function changeBookJacket(BookChangeJacketRequest $request, $id)
     {
-        //specifically for changing book
+        $input = $request->get('book_jacket');
     }
 }
