@@ -37,7 +37,7 @@ class BookRequest extends FormRequest
         return [
             'name' => 'required',
             'author' => 'required',
-            'book_jacket' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'book_jacket' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ] +
             ($this->route('id') ? $this->update() : $this->store());
     }

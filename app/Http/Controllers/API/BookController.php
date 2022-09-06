@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BookRequest;
 use App\Interfaces\BookInterface;
 use App\Interfaces\FileTypeInterface;
-use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -21,10 +20,10 @@ class BookController extends Controller
         $this->fileTypeInterface = $fileTypeInterface;
     }
 
-    public function storeBook(BookRequest $request, $id = null) // adapt form request
+    public function storeBook(BookRequest $request, $id = null)
     {
         $input = $request->all();
-dd($input);
+
         $input['user_id'] = auth()->id();
         
         $input['file_type_id'] = $this->getFileTypeId($input['book']);
@@ -34,17 +33,22 @@ dd($input);
 
     private function getFileTypeId($file)
     {
-        $fileExtension = strtolower($file->getClientOriginalExtension());
+        $ext = strtolower($file->getClientOriginalExtension());
 
-        $fileType = $this->fileTypeInterface->getFileTypeByName($fileExtension);
+        $fileType = $this->fileTypeInterface->getFileTypeByName($ext);
 
         if (!$fileType) {
-            $ext = ['name' => $fileExtension];
-
-            $fileType = $this->fileTypeInterface->storeFileType($ext);
+            $fileType = $this->createNewFileType($ext);
         }
 
         return $fileType->id;
+    }
+
+    private function createNewFileType($ext)
+    {
+        $ext = ['name' => $ext];
+
+        return $this->fileTypeInterface->storeFileType($ext);
     }
 
     public function changeBookFile(BookRequest $request, $id) // diff form request
