@@ -8,6 +8,7 @@ use App\Http\Requests\BookChangeJacketRequest;
 use App\Http\Requests\BookRequest;
 use App\Interfaces\BookInterface;
 use App\Interfaces\FileTypeInterface;
+use Ramsey\Uuid\Type\Integer;
 
 class BookController extends Controller
 {
@@ -55,13 +56,29 @@ class BookController extends Controller
         return $this->fileTypeInterface->storeFileType($ext);
     }
 
-    public function changeBookFile(BookChangeFileRequest $request, $id)
+    public function changeBook(BookChangeFileRequest $request, $id)
     {
-        $input = $request->get('book');
+        $file = $request->file('book');
+
+        $details = [
+            'id' => $id,
+            'fieldName' => 'book_url',
+            'message' => 'Book updated'
+        ];
+
+        return $this->bookInterface->changeFile($details, $file);
     }
 
     public function changeBookJacket(BookChangeJacketRequest $request, $id)
     {
-        $input = $request->get('book_jacket');
+        $file = $request->file('book_jacket');
+
+        $details = [
+            'id' => $id,
+            'fieldName' => 'book_jacket_url',
+            'message' => 'Book jacket updated'
+        ];
+
+        return $this->bookInterface->changeFile($details, $file);
     }
 }

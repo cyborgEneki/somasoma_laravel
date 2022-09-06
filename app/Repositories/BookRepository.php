@@ -43,31 +43,30 @@ class BookRepository implements BookInterface
         return Storage::disk('s3')->put($folderName, $file);
     }
 
-    public function changeBook($input)
+    public function changeFile($details, $file)
     {
-        // if ($this->hasFileNameChanged($oldBookName, $newBookName)) {
-        //     $oldBookUrl = $book->book_url;
+        $book = Book::find($details['id']);
 
-        //     $this->deleteFileFromStorage($oldBookUrl);
+        if (!$book) {
+            return $this->error('No book with ID ' . $details['id'], 404);
+        }
 
-        //     $input['original_file_name'] = $input['book']->getClientOriginalName();
-        //     $input['book_url'] = $this->saveFileToStorage('books', $input['book']);
-        // }
+        if ($details['fieldName'] == 'book_url') {
+            $oldUrl = $book->book_url;
+            $input['book_url'] = $this->saveFileToStorage('books', $file);
+        } else {
+            $oldUrl = $book->book_jacket_url;
+            $input['book_jacket_url'] = $this->saveFileToStorage('book_jackets', $file);
+        }
+
+        $this->deleteFileFromServer($oldUrl);
+
+        $book->update($input);
+
+        return $this->success($details['message'], $book, 204);
     }
 
-    public function changeBookJacket($input)
-    {
-        // if ($book->original_book_jacket_name != $input['book_jacket']->getClientOriginalName()) {
-        //     $oldBookJacketUrl = $book->book_jacket_url;
-
-        //     $this->deleteFileFromStorage($oldBookJacketUrl);
-
-        //     $input['original_book_jacket_name'] = $input['book_jacket']->getClientOriginalName();
-        //     $input['book_jacket_url'] = $this->saveFileToStorage('book_jackets', $input['book_jacket']);
-        // }
-    }
-
-    private function deleteFileFromStorage($oldUrl)
+    private function deleteFileFromServer($oldUrl)
     {
         Storage::disk('s3')->delete($oldUrl);
     }
