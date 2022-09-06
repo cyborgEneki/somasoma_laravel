@@ -57,4 +57,9 @@ class BookController extends Controller
     {
         //specifically for changing book
     }
+
+    public function changeBookJacket(BookRequest $request, $id) // diff form request
+    {
+        //specifically for changing book
+    }
 }
