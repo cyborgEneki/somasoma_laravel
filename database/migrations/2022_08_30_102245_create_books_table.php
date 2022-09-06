@@ -20,8 +20,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('file_type_id')->constrained();
             $table->string('book_jacket_url');
-            $table->string('original_file_name');
-            $table->string('original_book_jacket_name');
             $table->string('book_url');
             $table->softDeletes();
             $table->timestamps();

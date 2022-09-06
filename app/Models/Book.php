@@ -17,9 +17,7 @@ class Book extends Model
         'book_url',
         'book_jacket_url',
         'user_id',
-        'file_type_id',
-        'original_file_name',
-        'original_book_jacket_name'
+        'file_type_id'
     ];
 
     public function user()
