@@ -29,7 +29,7 @@ class BookRepository implements BookInterface
 
         $book->genres()->sync($input['genreIds']);
 
-        return $this->success($id ? 'Book updated' : 'Book created', $book, $id ? 204 : 201);
+        return $this->success($id ? 'Book updated' : 'Book created', $book, $id ? 200 : 201);
     }
 
     private function getStorageFileUrls(&$input)

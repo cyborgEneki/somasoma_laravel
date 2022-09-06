@@ -26,7 +26,9 @@ class BookController extends Controller
 
         $input['user_id'] = auth()->id();
         
-        $input['file_type_id'] = $this->getFileTypeId($input['book']);
+        if (!$id) {
+            $input['file_type_id'] = $this->getFileTypeId($input['book']);
+        }
 
         return $this->bookInterface->storeBook($input, $id);
     }

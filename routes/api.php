@@ -17,7 +17,8 @@ use App\Http\Controllers\API\BookController;
 */
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('store-book/{id?}', [BookController::class, 'storeBook']);
-    Route::post('change-book/{id}', [BookController::class, 'changeBookFile']);
+    Route::post('change-book-file/{bookId}', [BookController::class, 'changeBookFile']);
+    Route::post('change-book-jacket/{bookId}', [BookController::class, 'changeBookJacket']);
 });
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
