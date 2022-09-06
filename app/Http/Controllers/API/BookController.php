@@ -24,7 +24,7 @@ class BookController extends Controller
     public function store(BookRequest $request, $id = null)
     {
         $input = $request->all();
-
+dd($input);
         $input['user_id'] = auth()->id();
         
         $input['file_type_id'] = $this->getFileTypeId($input['book']);
