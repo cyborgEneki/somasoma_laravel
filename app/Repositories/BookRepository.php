@@ -39,7 +39,9 @@ class BookRepository implements BookInterface
 
     private function saveFileToStorage($folderName, $file)
     {
-        return Storage::disk('s3')->put($folderName, $file);
+        $diskLocation = config('database.disk');
+
+        return Storage::disk($diskLocation)->put($folderName, $file);
     }
 
     public function changeFile($details, $file)
@@ -67,6 +69,8 @@ class BookRepository implements BookInterface
 
     private function deleteFileFromServer($oldUrl)
     {
-        Storage::disk('s3')->delete($oldUrl);
+        $diskLocation = config('database.disk');
+
+        Storage::disk($diskLocation)->delete($oldUrl);
     }
 }
