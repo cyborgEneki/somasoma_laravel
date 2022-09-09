@@ -76,7 +76,7 @@ class BookController extends Controller
 
         $book = $this->bookInterface->changeFile($details, $file);
 
-        $this->bookJsonResponse($book, $details);
+        $this->updateBookJsonResponse($book, $details);
     }
 
     public function changeBookJacket(BookChangeJacketRequest $request, $id)
@@ -91,15 +91,22 @@ class BookController extends Controller
 
         $book = $this->bookInterface->changeFile($details, $file);
 
-        $this->bookJsonResponse($book, $details);
+        $this->updateBookJsonResponse($book, $details);
     }
 
-    private function bookJsonResponse($book, $details)
+    private function updateBookJsonResponse($book, $details)
     {
         if (!$book) {
             return $this->error('No book with ID ' . $details['id'], 404);
         }
 
-        return $this->success($details['message'], $book, 204);
+        return $this->success($details['message'], $book, 200);
+    }
+
+    public function deleteBook($id)
+    {
+        $book = $this->bookInterface->deleteBook($id);
+
+        return $this->success('Book deleted', $book, 200);
     }
 }

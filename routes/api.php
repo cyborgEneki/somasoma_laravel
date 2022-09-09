@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('store-book/{id?}', [BookController::class, 'storeBook']);
     Route::post('change-book/{bookId}', [BookController::class, 'changeBook']);
     Route::post('change-book-jacket/{bookId}', [BookController::class, 'changeBookJacket']);
+    Route::delete('delete-book/{bookId}', [BookController::class, 'deleteBook']);
 });
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);

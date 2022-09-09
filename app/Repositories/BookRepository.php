@@ -11,7 +11,7 @@ class BookRepository implements BookInterface
     public function storeBook($input, $id = null)
     {
         if ($id) {
-            $book = Book::find($id);
+            $book = $this->findBookById($id);
 
             if (!$book) {
                 return false;
@@ -46,7 +46,7 @@ class BookRepository implements BookInterface
 
     public function changeFile($details, $file)
     {
-        $book = Book::find($details['id']);
+        $book = $this->findBookById(details['id']);
 
         if (!$book) {
             return false;
@@ -72,5 +72,22 @@ class BookRepository implements BookInterface
         $diskLocation = config('database.disk');
 
         Storage::disk($diskLocation)->delete($oldUrl);
+    }
+
+    public function deleteBook($id)
+    {
+        $book = $this->findBookById($id);
+
+        $this->deleteFileFromServer($book->book_url);
+        $this->deleteFileFromServer($book->book_jacket_url);
+
+        $book->genres()->detach();
+
+        return $book->delete();
+    }
+
+    public function findBookById($id)
+    {
+        return Book::find($id);
     }
 }
