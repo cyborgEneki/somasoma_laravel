@@ -35,7 +35,7 @@ class BookChangeJacketRequest extends FormRequest
     public function rules()
     {
         return [
-            'book_jacket' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
+            'book_jacket' => 'required|image|mimes:jpeg,png,jpg'
         ];
     }
 }

@@ -90,4 +90,14 @@ class BookRepository implements BookInterface
     {
         return Book::find($id);
     }
+
+    public function getBooks()
+    {
+        return Book::with('genres')->get();
+    }
+
+    public function showBook($id)
+    {
+        return Book::where('id', $id)->with('genres')->first();
+    }
 }

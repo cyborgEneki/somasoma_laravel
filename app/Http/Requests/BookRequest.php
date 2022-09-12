@@ -37,7 +37,7 @@ class BookRequest extends FormRequest
         return [
             'name' => 'required',
             'author' => 'required',
-            'book_jacket' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'book_jacket' => 'nullable|image|mimes:jpeg,png,jpg',
         ] +
             ($this->route('id') ? $this->update() : $this->store());
     }
@@ -45,7 +45,7 @@ class BookRequest extends FormRequest
     protected function store()
     {
         return [
-            'book' => 'required|mimes:pdf'
+            'book' => 'required|mimes:pdf,epub,mobi'
         ];
     }
 

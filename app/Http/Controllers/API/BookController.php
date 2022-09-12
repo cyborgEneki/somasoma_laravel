@@ -109,4 +109,14 @@ class BookController extends Controller
 
         return $this->success('Book deleted', $book, 200);
     }
+
+    public function showBook($id)
+    {
+        return $this->bookInterface->showBook($id);
+    }
+
+    public function getBooks()
+    {
+        return $this->bookInterface->getBooks();
+    }
 }

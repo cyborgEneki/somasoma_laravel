@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BookController;
 
@@ -20,6 +19,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('change-book/{bookId}', [BookController::class, 'changeBook']);
     Route::post('change-book-jacket/{bookId}', [BookController::class, 'changeBookJacket']);
     Route::delete('delete-book/{bookId}', [BookController::class, 'deleteBook']);
+    Route::get('book/{bookId}', [BookController::class, 'showBook']);
+    Route::get('books', [BookController::class, 'getBooks']);
 });
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
