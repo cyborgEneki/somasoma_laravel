@@ -46,7 +46,7 @@ class BookRepository implements BookInterface
 
     public function changeFile($details, $file)
     {
-        $book = $this->findBookById(details['id']);
+        $book = $this->findBookById($details['id']);
 
         if (!$book) {
             return false;
