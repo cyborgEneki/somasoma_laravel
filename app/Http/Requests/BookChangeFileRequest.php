@@ -35,7 +35,7 @@ class BookChangeFileRequest extends FormRequest
     public function rules()
     {
         return [
-            'book' => 'required|mimes:pdf'
+            'book' => 'required|mimes:pdf,epub,mobi'
         ];
     }
 }

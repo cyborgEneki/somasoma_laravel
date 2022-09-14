@@ -148,4 +148,5 @@ return [
 
     ],
 
+    'disk' => env('STORAGE_DISK')
 ];

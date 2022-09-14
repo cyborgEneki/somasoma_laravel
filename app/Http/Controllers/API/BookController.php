@@ -8,10 +8,12 @@ use App\Http\Requests\BookChangeJacketRequest;
 use App\Http\Requests\BookRequest;
 use App\Interfaces\BookInterface;
 use App\Interfaces\FileTypeInterface;
-use Ramsey\Uuid\Type\Integer;
+use App\Traits\ResponseApi;
 
 class BookController extends Controller
 {
+    use ResponseApi;
+
     private $bookInterface;
     private $fileTypeInterface;
 
@@ -28,12 +30,18 @@ class BookController extends Controller
         $input = $request->all();
 
         $input['user_id'] = auth()->id();
-        
+
         if (!$id) {
             $input['file_type_id'] = $this->getFileTypeId($input['book']);
         }
 
-        return $this->bookInterface->storeBook($input, $id);
+        $book = $this->bookInterface->storeBook($input, $id);
+
+        if (!$book) {
+            return $this->error('No book with ID ' . $id, 404);
+        }
+
+        return $this->success($id ? 'Book updated' : 'Book created', $book, $id ? 200 : 201);
     }
 
     private function getFileTypeId($file)
@@ -66,7 +74,9 @@ class BookController extends Controller
             'message' => 'Book updated'
         ];
 
-        return $this->bookInterface->changeFile($details, $file);
+        $book = $this->bookInterface->changeFile($details, $file);
+
+        $this->updateBookJsonResponse($book, $details);
     }
 
     public function changeBookJacket(BookChangeJacketRequest $request, $id)
@@ -79,6 +89,34 @@ class BookController extends Controller
             'message' => 'Book jacket updated'
         ];
 
-        return $this->bookInterface->changeFile($details, $file);
+        $book = $this->bookInterface->changeFile($details, $file);
+
+        $this->updateBookJsonResponse($book, $details);
+    }
+
+    private function updateBookJsonResponse($book, $details)
+    {
+        if (!$book) {
+            return $this->error('No book with ID ' . $details['id'], 404);
+        }
+
+        return $this->success($details['message'], $book, 200);
+    }
+
+    public function deleteBook($id)
+    {
+        $book = $this->bookInterface->deleteBook($id);
+
+        return $this->success('Book deleted', $book, 200);
+    }
+
+    public function showBook($id)
+    {
+        return $this->bookInterface->showBook($id);
+    }
+
+    public function getBooks()
+    {
+        return $this->bookInterface->getBooks();
     }
 }
