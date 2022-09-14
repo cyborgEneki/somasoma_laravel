@@ -112,11 +112,15 @@ class BookController extends Controller
 
     public function showBook($id)
     {
-        return $this->bookInterface->showBook($id);
+        $book = $this->bookInterface->showBook($id);
+
+        return $this->success('Success retrieving the resource requested', $book, 200);
     }
 
     public function getBooks()
     {
-        return $this->bookInterface->getBooks();
+        $books = $this->bookInterface->getBooks();
+
+        return $this->success('Success retrieving the resources requested', $books, 200);
     }
 }
